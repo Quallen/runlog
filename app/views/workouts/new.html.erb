@@ -1,0 +1,19 @@
+<h1>Workout#new</h1>
+
+<%= form_for(@workout) do |f| %>
+
+  <%= f.label :date %>
+  <%= f.text_field :date %>
+
+  <%= f.label :distance %>
+  <%= f.number_field :distance, :step => ".01" %>
+
+  <%= f.label :effort %>
+  <%= f.select :effort, ['easy / recovery', 'moderate', 'difficult / workout'] %>
+
+  <%= f.label :note %>
+  <%= f.text_field :note %>
+
+<%= f.submit %>
+
+<% end %>
