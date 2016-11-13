@@ -2,6 +2,20 @@
 
 <%= form_for(@workout) do |f| %>
 
+<% if @workout.errors.any? %>
+
+  <div id="error_explanation">
+   <h2><%= pluralize(@workout.errors.count, "error") %> prohibited this run from being saved:</h2>
+
+   <ul>
+     <% @workout.errors.full_messages.each do |msg| %>
+       <li><%= msg %></li>
+     <% end %>
+   </ul>
+  </div>
+
+<% end %>
+
   <%= f.label :date %>
   <%= f.text_field :date %>
 
@@ -9,7 +23,7 @@
   <%= f.number_field :distance, :step => ".01" %>
 
   <%= f.label :effort %>
-  <%= f.select :effort, ['easy / recovery', 'moderate', 'difficult / workout'] %>
+  <%= f.select :effort, Workout::EFFORT_LIST, :include_blank => true %>
 
   <%= f.label :note %>
   <%= f.text_field :note %>

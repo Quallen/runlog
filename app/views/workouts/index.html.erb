@@ -5,6 +5,8 @@
 
 <p> List view workout data for now. Would like to graph things though</p>
 
+<p> Rolling 7 day total mileage:  <%= number_with_precision(@rolling_total , precision: 1) %> </p>
+<p> Last weeks total mileage: <%= number_with_precision(@last_week_total, precision: 1) %> </p>
 <table>
   <caption>Table of logged runs</caption>
   <thead>

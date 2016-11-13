@@ -6,6 +6,8 @@ class WorkoutsController < ApplicationController
 
   def index
     @workouts = current_user.workouts
+    @rolling_total = current_user.rolling_7_day_mileage
+    @last_week_total = current_user.last_weeks_mileage
   end
 
   def create
