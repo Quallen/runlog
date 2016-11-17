@@ -5,3 +5,7 @@
 
 jQuery ->
   $('#workout_date').fdatepicker()
+
+  if $("#run-index-table").length
+    $("tr[data-link]").click ->
+      window.location = $(this).data("link")

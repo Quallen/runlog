@@ -26,7 +26,7 @@ feature 'workout tests - ' do
     select("easy / recovery", :from => "Effort")
     fill_in('Note', :with => "Imaginary runs are often easy")
 
-    click_button 'Create Workout'
+    click_button 'Submit'
 
     # expect to see the run we just logged
     page.should have_content("2.73")
@@ -37,7 +37,7 @@ feature 'workout tests - ' do
 
     click_link 'Log New Run'
 
-    click_button 'Create Workout'
+    click_button 'Submit'
 
     page.should have_content "Date can't be blank"
     page.should have_content "Distance can't be blank"
@@ -52,7 +52,7 @@ feature 'workout tests - ' do
     fill_in('Date', :with => "13/13/2000")
     fill_in('Distance', :with => "a")
 
-    click_button 'Create Workout'
+    click_button 'Submit'
 
     page.should have_content "Date should be in the following format "
     page.should have_content "Distance is not a number"
@@ -80,6 +80,20 @@ feature 'workout tests - ' do
     visit root_path
 
     page.should have_content "Last weeks total mileage: 14.0"
+  end
+
+  # need js driver since were using js to hyperlink the table row
+  scenario "user can view and edit an existing run", :js => true do
+
+    FactoryGirl.create(:workout, user: User.first, date: Date.today, distance: 3)
+
+    visit root_path
+
+    # click the table row to get to the invoice
+    find(:xpath, "//table/tbody/tr").click()
+
+    # should see update button
+    find_button "Update"
   end
 
 end

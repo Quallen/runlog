@@ -39,6 +39,7 @@ RSpec.configure do |config|
   #Kernel.srand config.seed
 
   config.order = "random"
-  Capybara.current_driver = :webkit
+  Capybara.javascript_driver = :webkit
+  #Capybara.current_driver = :webkit
   config.include Capybara::DSL
 end

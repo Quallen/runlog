@@ -7,7 +7,7 @@
 
 <p> Rolling 7 day total mileage:  <%= number_with_precision(@rolling_total , precision: 1) %> </p>
 <p> Last weeks total mileage: <%= number_with_precision(@last_week_total, precision: 1) %> </p>
-<table>
+<table id="run-index-table">
   <caption>Table of logged runs</caption>
   <thead>
     <tr>
@@ -19,7 +19,7 @@
   </thead>
   <tbody>
     <% @workouts.each do |run| %>
-      <tr>
+      <tr data-link="<%= edit_workout_path(run.id) %>">
         <td><%= run.date.strftime('%m/%d/%Y') %></td>
         <td><%= run.distance %></td>
         <td><%= run.effort %></td>
