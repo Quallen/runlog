@@ -73,7 +73,7 @@ feature 'workout tests - ' do
 
   scenario "last weeks total mileage is displayed" do
 
-    (2..21).each do |x|
+    (1..21).each do |x|
       run = FactoryGirl.create(:workout, user: User.first ,date: Date.today-x, distance: 2)
     end
 
@@ -85,15 +85,76 @@ feature 'workout tests - ' do
   # need js driver since were using js to hyperlink the table row
   scenario "user can view and edit an existing run", :js => true do
 
-    FactoryGirl.create(:workout, user: User.first, date: Date.today, distance: 3)
+    FactoryGirl.create(:workout, user: User.first, date: Date.today, distance: 3, note: "Search for ME")
 
     visit root_path
 
-    # click the table row to get to the invoice
-    find(:xpath, "//table/tbody/tr").click()
+    # click anywhere on the table row
+    page.find(:xpath,"//*[text()='Search for ME']").click
 
     # should see update button
     find_button "Update"
+  end
+
+  scenario "chart weekly mileage", :js => true do
+
+    (1..69).each do |x|
+      run = FactoryGirl.create(:workout, user: User.first ,date: Date.today-x, distance: Random.rand(2.0..5.0))
+    end
+
+    visit root_path
+
+    # should see the chart div
+    page.should have_css "div#chart-1"
+  end
+
+  scenario "if yesterday was a hard run training partner should suggest an easy run" do
+    FactoryGirl.create(:workout, user: User.first, date: Date.yesterday, effort: Workout::EFFORT_LIST.last, distance: Random.rand(4.0..6.0))
+
+    # since we have no other mileage history we'll see the default recommendation for 1.5
+    visit root_path
+
+    page.should have_content "Easy 1.5 mile run to recover from yesterdays hard effort"
+
+  end
+
+  scenario "a long run should be recommended if there is space for in the rolling total" do
+
+    # Probably want to create some helpers for creating previous weeks worth of runs
+    Date.today.last_week.beginning_of_week.upto(Date.today.last_week.end_of_week) do |day|
+      FactoryGirl.create(:workout, user: User.first ,date: day, distance: 4)
+    end
+
+    # change some numbers so this test works on mondays, el oh el
+    Workout.first.update_attributes(:distance => 7)
+    Workout.last.update_attributes(:distance => 1)
+
+    visit root_path
+
+    page.should have_content "Moderate 7.0 mile long run"
+
+  end
+
+  scenario "a long run should be recommended if there is space in the current week as well as the rolling total" do
+
+    Timecop.travel(Time.zone.local(2016, 11, 27,12)) do
+
+      # fill in the previous week
+      Date.today.last_week.beginning_of_week.upto(Date.today.last_week.end_of_week) do |day|
+        FactoryGirl.create(:workout, user: User.first ,date: day, distance: 4)
+      end
+
+      # low mileage this week
+      Date.today.beginning_of_week.upto(Date.today.end_of_week - 1) do |day|
+        FactoryGirl.create(:workout, user: User.first ,date: day, distance: 2)
+      end
+
+      visit root_path
+
+      page.should have_content "Moderate 7.0 mile long run"
+
+    end
+
   end
 
 end

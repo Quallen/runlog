@@ -16,6 +16,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -24,6 +26,9 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'devise'
+
+gem 'chartkick'
+gem 'groupdate'
 
 # shut up assets!
 gem 'quiet_assets'
@@ -34,6 +39,7 @@ gem 'foundation-datepicker-rails'
 gem 'foundation-datetimepicker-rails'
 
 gem 'american_date'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -55,6 +61,8 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'capybara-screenshot'
+  gem 'timecop'
+  gem 'poltergeist'
 end
 
 group :development do

@@ -2,7 +2,14 @@ Rails.application.routes.draw do
   devise_for :users
 
   #get 'workout/index'
-  resources :workouts
+  resources :workouts do
+
+    collection do
+        get 'mileage_chart'
+        get 'training_suggestion'
+    end
+
+  end
 
   root to: "workouts#index"
   # The priority is based upon order of creation: first created -> highest priority.
